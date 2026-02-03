@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Will You Be My Valentine? 💘</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #f9c5d1;
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+  }
+
+  /* CENTER CONTENT */
+  .wrapper {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* 🤍 MAIN CARD */
+  .container {
+    position: relative;
+    background: white;
+    padding: 35px 25px;
+    width: 330px;
+    border-radius: 25px;
+    text-align: center;
+  }
+
+  /* 💖 HEART FRAME */
+  .heart-frame {
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    gap: 6px;
+    font-size: 18px;
+    flex-wrap: wrap;
+  }
+
+  .heart-frame.top,
+  .heart-frame.bottom {
+    left: -10px;
+    right: -10px;
+    height: 30px;
+    justify-content: center;
+  }
+
+  .heart-frame.top { top: -32px; }
+  .heart-frame.bottom { bottom: -32px; }
+
+  .heart-frame.left,
+  .heart-frame.right {
+    top: -10px;
+    bottom: -10px;
+    width: 30px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .heart-frame.left { left: -32px; }
+  .heart-frame.right { right: -32px; }
+
+  h1 {
+    color: #e75480;
+  }
+
+  button {
+    padding: 10px 22px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    margin: 10px;
+    cursor: pointer;
+  }
+
+  .yes { background: #ff69b4; color: white; }
+  .no {
+    background: #aaa;
+    color: white;
+    position: relative;
+  }
+
+  img {
+    width: 200px;
+    margin-top: 15px;
+    border-radius: 12px;
+  }
+
+  #result { display: none; }
+
+  /* 🌧️ EMOJI RAIN */
+  .rain {
+    position: fixed;
+    top: -40px;
+    animation: fall linear forwards;
+    z-index: 5;
+  }
+
+  @keyframes fall {
+    from { transform: translateY(0); }
+    to { transform: translateY(120vh); }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="container">
+
+    <!-- 💖 HEART OUTLINE -->
+    <div class="heart-frame top"></div>
+    <div class="heart-frame bottom"></div>
+    <div class="heart-frame left"></div>
+    <div class="heart-frame right"></div>
+
+    <h1>Will you be my Valentine? 💘</h1>
+
+    <button class="yes" onclick="yesClicked()">Yes</button>
+    <button class="no" id="noBtn">No</button>
+
+    <div id="result">
+      <h2 id="resultText"></h2>
+      <img id="resultImg">
+    </div>
+
+    <img id="donkey" src="images/donkey.gif" alt="Donkey">
+  </div>
+</div>
+
+<script>
+  /* 💖 FILL HEART FRAME */
+  function fillHearts() {
+    document.querySelectorAll(".heart-frame").forEach(frame => {
+      frame.innerHTML = "";
+      for (let i = 0; i < 40; i++) {
+        frame.innerHTML += "💖";
+      }
+    });
+  }
+  fillHearts();
+
+  /* 🌧️ CONTINUOUS RAIN */
+  let rainInterval;
+  function startRain(emojis, speedRange) {
+    clearInterval(rainInterval);
+    rainInterval = setInterval(() => {
+      for (let i = 0; i < 6; i++) {
+        const drop = document.createElement("div");
+        drop.className = "rain";
+        drop.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        drop.style.left = Math.random() * 100 + "vw";
+        drop.style.fontSize = Math.random() * 24 + 20 + "px";
+        drop.style.animationDuration =
+          Math.random() * speedRange + speedRange + "s";
+
+        document.body.appendChild(drop);
+        setTimeout(() => drop.remove(), 9000);
+      }
+    }, 300);
+  }
+
+  /* 💘 YES CLICK */
+  function yesClicked() {
+    document.getElementById("donkey").style.display = "none";
+    document.getElementById("result").style.display = "block";
+    document.getElementById("resultText").innerText = "YIPEE!!! 💕🎉";
+    document.getElementById("resultImg").src = "images/roderick.webp";
+
+    startRain(["☁️", "💖", "💕", "💞"], 4);
+  }
+
+  /* 😈 ESCAPING NO BUTTON */
+  const noBtn = document.getElementById("noBtn");
+
+  noBtn.addEventListener("mouseenter", () => {
+    const container = document.querySelector(".container");
+
+    const maxX = container.clientWidth - noBtn.offsetWidth;
+    const maxY = container.clientHeight - noBtn.offsetHeight;
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+  });
+</script>
+
+</body>
+</html>
